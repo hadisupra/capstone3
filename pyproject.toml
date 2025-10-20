@@ -1,43 +1,55 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chatbot_resume"
+name = "capstone3"
 version = "0.1.0"
-description = "Streamlit app for resume-based chatbot using LangChain and Qdrant"
-authors = [{ name = "Hadi", email = "hadi.supra@gmail.com" }]
+description = "Resume advisor chatbot"
 readme = "README.md"
-requires-python = ">=3.10,<4.0"
+license = { text = "MIT" }
+requires-python = ">=3.9"
 
 dependencies = [
-    "streamlit>=1.28,<2.0",
-    "pandas>=1.5,<2.1",
-    "tiktoken>=0.5,<0.6",
-    "langgraph==0.0.40",
-    "langchain_text_splitters>=0.0.1,<0.1",
-    "langchain_community>=0.0.1,<0.1",
-    "qdrant-client>=1.6,<2.0",
-    "openai>=1.0.0",
-    "python-dotenv>=1.0,<1.1"
+  # environment
+  "python-dotenv>=1.0.0",
+
+  # web app
+  "streamlit>=1.20.0",
+
+  # data handling & utilities
+  "pandas>=2.0.0",
+  "tiktoken>=0.4.0",
+  "requests>=2.28.0",
+
+  # OpenAI & embeddings
+  "openai>=0.27.0",
+  "sentence-transformers>=2.2.2",
+
+  # LangChain ecosystem (core + community integrations)
+  "langchain>=0.0.300",
+  "langchain-community>=0.0.10",
+  "langchain-openai>=0.0.8",
+
+  # LangGraph (used in main.py)
+  "langgraph>=0.1.0",
+
+  # Qdrant client and server interactions
+  "qdrant-client>=1.7.0",
+
+  # Text splitters (if you rely on the separate package)
+  "langchain-text-splitters>=0.0.10",
+
+  # Optional plotting / debug
+  "matplotlib>=3.7.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "black>=23.0,<24.0",
-    "isort>=5.12,<6.0",
-    "mypy>=1.6,<2.0"
+  "pytest>=7.0.0",
+  "black>=23.0.0",
+  "ruff>=0.10.0"
 ]
-
-[tool.black]
-line-length = 88
-
-[tool.isort]
-profile = "black"
-
-[tool.mypy]
-strict = true
-
-[tool.poetry]
-package-mode = false
-
+ci = [
+  "tox>=4.0.0"
+]
