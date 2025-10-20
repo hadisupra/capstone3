@@ -40,7 +40,7 @@ dependencies = [
   "qdrant-client>=1.7.0",
 
   # Text splitters (if you rely on the separate package)
-  "langchain-text-splitters>=0.0.10",
+  "langchain-text-splitters=0.0.10",
 
   # Optional plotting / debug
   "matplotlib>=3.7.0",
