@@ -45,6 +45,9 @@ dependencies = [
   # Optional plotting / debug
   "matplotlib>=3.7.0",
 ]
+[tool.poetry]
+package-mode = false
+
 
 [project.optional-dependencies]
 dev = [
