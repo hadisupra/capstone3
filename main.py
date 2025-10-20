@@ -1,7 +1,7 @@
 import os
 import langgraph
 from openai import api_key
-import st
+import streamlit as st
 from streamlit import text_input
 import tiktoken
 from dotenv import load_dotenv
