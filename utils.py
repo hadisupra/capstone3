@@ -6,7 +6,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 #from langchain.text_splitters import RecursiveCharacterTextSplitter
 MAX_TOKENS = 4096
 
-df = pd.read_csv("/mount/src/capstone3/RESUME.csv",dtype=str,nrows=500)
+df = pd.read_csv("/workspaces/capstone3/Resume.csv",dtype=str,nrows=500)
 print(df.columns)
 df.info()
 df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
