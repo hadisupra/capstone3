@@ -16,7 +16,7 @@ dependencies = [
 
   # web app
   
-  "streamlit>=1.20.0,<1.50.0"
+  "streamlit>=1.20.0,<1.50.0",
 
 
   # data handling & utilities
