@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Chatbot AI - 1000 Resumes Database</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            max-height: 800px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 30px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-content {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .candidates-list {
+            margin-top: 10px;
+        }
+
+        .candidate-card {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        .candidate-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .candidate-info {
+            font-size: 13px;
+            color: #666;
+            margin: 2px 0;
+        }
+
+        .skills-tag {
+            display: inline-block;
+            background: #e7e9fc;
+            color: #667eea;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        .input-container {
+            padding: 20px 30px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #userInput:focus {
+            border-color: #667eea;
+        }
+
+        #sendBtn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #sendBtn:hover {
+            transform: scale(1.05);
+        }
+
+        #sendBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-btn {
+            padding: 8px 14px;
+            background: white;
+            border: 1px solid #667eea;
+            color: #667eea;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggestion-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Resume Chatbot AI</h1>
+            <p>Search through 1000 professional resumes instantly</p>
+        </div>
+
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalResumes">-</div>
+                <div class="stat-label">Total Resumes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="uniqueSkills">-</div>
+                <div class="stat-label">Unique Skills</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="uniqueTitles">-</div>
+                <div class="stat-label">Job Titles</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="avgExperience">-</div>
+                <div class="stat-label">Avg. Experience</div>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    Hello! I'm your Resume Chatbot AI assistant. I can help you search through 1000 professional resumes in our database.
+                    <br><br>
+                    Try asking me:
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Find Python developers</li>
+                        <li>Show candidates with 5+ years experience</li>
+                        <li>Who worked at Google?</li>
+                        <li>Show me statistics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="suggestions">
+                <button class="suggestion-btn" onclick="sendSuggestion('Show me Python developers')">Python developers</button>
+                <button class="suggestion-btn" onclick="sendSuggestion('Find candidates with 5+ years')">5+ years exp</button>
+                <button class="suggestion-btn" onclick="sendSuggestion('Show me statistics')">Statistics</button>
+                <button class="suggestion-btn" onclick="sendSuggestion('Top skills')">Top skills</button>
+            </div>
+            <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="Ask me anything about the resumes..." 
+                       onkeypress="handleKeyPress(event)">
+                <button id="sendBtn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load statistics on page load
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                document.getElementById('totalResumes').textContent = stats.total_resumes;
+                document.getElementById('uniqueSkills').textContent = stats.unique_skills;
+                document.getElementById('uniqueTitles').textContent = stats.unique_titles;
+                document.getElementById('avgExperience').textContent = stats.avg_experience + ' yrs';
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function addMessage(text, isUser, data = null) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            avatarDiv.textContent = isUser ? '👤' : '🤖';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            // Format message with line breaks
+            contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+            
+            // Add candidate cards if data is provided
+            if (data && data.length > 0) {
+                const candidatesList = document.createElement('div');
+                candidatesList.className = 'candidates-list';
+                
+                data.slice(0, 5).forEach(candidate => {
+                    const card = document.createElement('div');
+                    card.className = 'candidate-card';
+                    
+                    const skillsHtml = candidate.skills.slice(0, 5).map(skill => 
+                        `<span class="skills-tag">${skill}</span>`
+                    ).join('');
+                    
+                    card.innerHTML = `
+                        <div class="candidate-name">${candidate.name}</div>
+                        <div class="candidate-info">📧 ${candidate.email}</div>
+                        <div class="candidate-info">💼 ${candidate.current_title}</div>
+                        <div class="candidate-info">📍 ${candidate.location}</div>
+                        <div class="candidate-info">⏱️ ${candidate.years_experience} years experience</div>
+                        <div style="margin-top: 6px;">${skillsHtml}</div>
+                    `;
+                    candidatesList.appendChild(card);
+                });
+                
+                contentDiv.appendChild(candidatesList);
+                
+                if (data.length > 5) {
+                    const moreInfo = document.createElement('div');
+                    moreInfo.style.marginTop = '10px';
+                    moreInfo.style.fontSize = '12px';
+                    moreInfo.style.color = '#666';
+                    moreInfo.textContent = `... and ${data.length - 5} more candidates`;
+                    contentDiv.appendChild(moreInfo);
+                }
+            }
+            
+            if (isUser) {
+                messageDiv.appendChild(contentDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+            }
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const query = input.value.trim();
+            
+            if (!query) return;
+            
+            // Add user message
+            addMessage(query, true);
+            input.value = '';
+            sendBtn.disabled = true;
+            
+            // Show loading
+            addMessage('Searching... <span class="loading"></span>', false);
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+                
+                const result = await response.json();
+                
+                // Remove loading message
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.removeChild(chatContainer.lastChild);
+                
+                // Add bot response
+                addMessage(result.message, false, result.data);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                // Remove loading message
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.removeChild(chatContainer.lastChild);
+                addMessage('Sorry, I encountered an error. Please try again.', false);
+            }
+            
+            sendBtn.disabled = false;
+            input.focus();
+        }
+
+        function sendSuggestion(text) {
+            document.getElementById('userInput').value = text;
+            sendMessage();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Load stats on page load
+        loadStats();
+    </script>
+</body>
+</html>
