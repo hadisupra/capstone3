@@ -38,7 +38,7 @@ version = "0.1.0"
 package-mode = false
 
 [tool.poetry.dependencies]
-langchain = "==0.0.310"
+langchain = ">=0.0.310"
 python = ">=3.8.1,<4.0"
 
 
