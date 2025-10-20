@@ -15,7 +15,9 @@ dependencies = [
   "python-dotenv>=1.0.0",
 
   # web app
-  "streamlit>=1.20.0",
+  
+  "streamlit>=1.20.0,<1.50.0"
+
 
   # data handling & utilities
   "pandas>=2.0.0",
