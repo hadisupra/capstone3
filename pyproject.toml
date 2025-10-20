@@ -35,3 +35,7 @@ profile = "black"
 
 [tool.mypy]
 strict = true
+
+[tool.poetry]
+package-mode = false
+
